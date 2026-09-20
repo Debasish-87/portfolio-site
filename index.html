@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Debasish Mohanty — AI Infrastructure Engineer</title>
+  <meta name="description"
+    content="AI Infrastructure Engineer building and debugging the infrastructure under LLMs. Contributor to vLLM, Kubernetes and Falco.">
+  <meta name="theme-color" content="#111418">
+  <link rel="canonical" href="https://www.debasishmohanty.in">
+  <link rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23111418'/%3E%3Crect x='10' y='7' width='5' height='18' fill='%23E5B567'/%3E%3C/svg%3E">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Debasish Mohanty">
+  <meta property="og:title" content="Debasish Mohanty — AI Infrastructure Engineer">
+  <meta property="og:description"
+    content="I make LLMs run fast, cheap and reliable. AWS → Kubernetes → vLLM → GPU. Contributor to vLLM, Kubernetes and Falco.">
+  <meta property="og:url" content="https://www.debasishmohanty.in">
+  <meta property="og:image" content="https://www.debasishmohanty.in/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Debasish Mohanty — AI Infrastructure Engineer">
+  <meta name="twitter:description"
+    content="I make LLMs run fast, cheap and reliable. AWS → Kubernetes → vLLM → GPU. Contributor to vLLM, Kubernetes and Falco.">
+  <meta name="twitter:image" content="https://www.debasishmohanty.in/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #111418;
+      --ink: #DDE2E8;
+      --muted: #8C95A1;
+      --rule: #2C333B;
+      --accent: #E5B567;
+      --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: inherit
+    }
+
+    html {
+      scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 5rem);
+      scroll-behavior: smooth
+    }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: .95rem;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased
+    }
+
+    a {
+      color: inherit
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px
+    }
+
+    .wrap {
+      max-width: 46rem;
+      margin: 0 auto;
+      padding: 0 1.5rem
+    }
+
+    .top {
+      position: sticky;
+      top: env(safe-area-inset-top, 0px);
+      z-index: 10;
+      background: var(--paper);
+      background: color-mix(in srgb, var(--paper) 78%, transparent);
+      -webkit-backdrop-filter: blur(6px);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px dashed var(--rule)
+    }
+
+    .top .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: .25rem 1.5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem
+    }
+
+    .brand {
+      font-weight: 500;
+      text-decoration: none
+    }
+
+    .top nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .25rem 1.25rem;
+      font-size: .9rem
+    }
+
+    .top nav a {
+      color: var(--muted);
+      text-decoration: none
+    }
+
+    .top nav a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: .25em
+    }
+
+    .stage {
+      position: sticky;
+      top: 0;
+      z-index: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      padding-bottom: 8rem;
+      display: flex;
+      align-items: center;
+      will-change: opacity, transform
+    }
+
+    .stage .wrap {
+      width: 100%
+    }
+
+    .net {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0
+    }
+
+    .stage>.wrap {
+      position: relative;
+      z-index: 1
+    }
+
+    .cue-wrap {
+      z-index: 1
+    }
+
+    .hero {
+      padding: 6rem 0 4rem
+    }
+
+    .panel {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      min-height: 100svh;
+      border-top: 1px dashed var(--rule)
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(1.9rem, 5vw, 2.75rem);
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: -.02em
+    }
+
+    .hero .tagline {
+      margin: 1.5rem 0 0;
+      font-size: 1.15rem;
+      line-height: 1.5
+    }
+
+    .hero .tagline::before {
+      content: "> ";
+      color: var(--accent)
+    }
+
+    .hero .tagline::after {
+      content: "";
+      display: inline-block;
+      width: .6ch;
+      height: 1.05em;
+      margin-left: .5ch;
+      vertical-align: text-bottom;
+      background: var(--accent);
+      animation: blink 1.1s steps(1) infinite
+    }
+
+    .hero.typed-js .tagline::after {
+      content: none
+    }
+
+    .hero .cursor {
+      display: inline-block;
+      width: .6ch;
+      height: 1.05em;
+      margin-left: .4ch;
+      vertical-align: text-bottom;
+      background: var(--accent);
+      animation: blink 1.1s steps(1) infinite
+    }
+
+    .hero.typing .cursor {
+      animation: none
+    }
+
+    .hero .about {
+      transition: opacity .8s ease
+    }
+
+    .hero.typing .about {
+      opacity: 0
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0
+    }
+
+    .hero .stack {
+      margin: 1rem 0 0;
+      font-weight: 500;
+      color: var(--accent)
+    }
+
+    .hero .about {
+      max-width: 36rem;
+      margin: 3.5rem 0 0;
+      color: var(--muted)
+    }
+
+    .hero .about p {
+      margin: 0 0 1rem
+    }
+
+    .contact {
+      border-top: 1px dashed var(--rule)
+    }
+
+    .problems {
+      padding: 4.5rem 0
+    }
+
+    .problems h2,
+    .contact h2,
+    .term h2,
+    .innovation h2,
+    .notes h2,
+    .now h2 {
+      margin: 0 0 2rem;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: -.02em
+    }
+
+    .problems h2::before,
+    .contact h2::before,
+    .term h2::before,
+    .innovation h2::before,
+    .notes h2::before,
+    .now h2::before {
+      content: "# ";
+      color: var(--accent)
+    }
+
+    .item {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: .5rem;
+      padding: 1.5rem 0;
+      border-top: 1px dashed var(--rule)
+    }
+
+    .item:last-child {
+      border-bottom: 1px dashed var(--rule)
+    }
+
+    .item h3 {
+      margin: 0;
+      font-size: .95rem;
+      font-weight: 500
+    }
+
+    .item p {
+      margin: 0
+    }
+
+    .item .problem {
+      color: var(--muted)
+    }
+
+    .item .fix {
+      margin-top: .25rem
+    }
+
+    .item .pr {
+      margin-top: .5rem;
+      font-size: .85rem
+    }
+
+    .item .pr a {
+      color: var(--accent);
+      text-underline-offset: .2em
+    }
+
+    .item .entry+.entry {
+      margin-top: 1.5rem
+    }
+
+    .item .entry .fix:first-child {
+      margin-top: 0
+    }
+
+    .item .idea {
+      color: var(--ink)
+    }
+
+    .item .detail {
+      margin-top: .25rem;
+      color: var(--muted)
+    }
+
+    .innovation,
+    .notes,
+    .now {
+      padding: 4.5rem 0;
+      border-top: 1px dashed var(--rule)
+    }
+
+    .notes .more {
+      margin: 1.5rem 0 0;
+      font-size: .9rem
+    }
+
+    .notes .more a {
+      color: var(--accent);
+      text-underline-offset: .2em
+    }
+
+    .now ul {
+      list-style: none;
+      margin: 0;
+      padding: 0
+    }
+
+    .now li {
+      padding: .2rem 0
+    }
+
+    .now li::before {
+      content: "- ";
+      color: var(--accent)
+    }
+
+    .now .stamp {
+      margin: 1.25rem 0 0;
+      font-size: .85rem;
+      color: var(--muted)
+    }
+
+    @media (min-width:40rem) {
+      .item {
+        grid-template-columns: 12rem 1fr;
+        gap: 2rem
+      }
+    }
+
+    .contact {
+      padding: 4.5rem 0 6rem
+    }
+
+    .contact .mail {
+      font-size: 1.15rem;
+      color: var(--accent);
+      text-underline-offset: .2em;
+      word-break: break-word
+    }
+
+    .contact .links {
+      margin: 1.25rem 0 0;
+      color: var(--muted)
+    }
+
+    .contact .links a {
+      margin-right: 1.25rem
+    }
+
+    .foot {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: .5rem 1rem;
+      padding-bottom: 3rem;
+      font-size: .85rem;
+      color: var(--muted)
+    }
+
+    .foot a {
+      color: var(--muted);
+      text-decoration: none
+    }
+
+    .foot a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: .25em
+    }
+
+    .progress {
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      width: 100%;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      pointer-events: none
+    }
+
+    .mailrow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .5rem 1rem
+    }
+
+    .copy {
+      font: inherit;
+      font-size: .8rem;
+      color: var(--muted);
+      background: transparent;
+      border: 1px dashed var(--rule);
+      padding: .25rem .75rem;
+      min-width: 6.5rem;
+      text-align: center;
+      cursor: pointer
+    }
+
+    .copy:hover {
+      color: var(--accent);
+      border-color: var(--accent)
+    }
+
+    .term {
+      padding: 4.5rem 0;
+      border-top: 1px dashed var(--rule)
+    }
+
+    .tbox {
+      border: 1px dashed var(--rule);
+      padding: 1rem 1.25rem;
+      cursor: text
+    }
+
+    .tbox:focus-within {
+      border-color: var(--accent)
+    }
+
+    .tout {
+      max-height: 18rem;
+      overflow-y: auto;
+      overscroll-behavior: contain
+    }
+
+    .tout p {
+      margin: 0;
+      white-space: pre-wrap;
+      word-break: break-word
+    }
+
+    .tout .cmd {
+      color: var(--muted)
+    }
+
+    .tout .cmd::before {
+      content: "$ ";
+      color: var(--accent)
+    }
+
+    .tout .cmd:not(:first-child) {
+      margin-top: .75rem
+    }
+
+    .tout a {
+      color: var(--accent);
+      text-underline-offset: .2em
+    }
+
+    .tform {
+      display: flex;
+      align-items: center;
+      gap: .6ch;
+      margin: .75rem 0 0
+    }
+
+    .tform .ps {
+      color: var(--accent)
+    }
+
+    .tform input {
+      flex: 1;
+      min-width: 0;
+      font: inherit;
+      color: var(--ink);
+      background: transparent;
+      border: 0;
+      outline: 0;
+      caret-color: var(--accent);
+      padding: .15rem 0
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 1rem
+    }
+
+    .chip {
+      font: inherit;
+      font-size: .8rem;
+      color: var(--muted);
+      background: transparent;
+      border: 1px dashed var(--rule);
+      padding: .25rem .75rem;
+      cursor: pointer
+    }
+
+    .chip:hover {
+      color: var(--accent);
+      border-color: var(--accent)
+    }
+
+    .cue-wrap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px))
+    }
+
+    .cue {
+      display: inline-block;
+      color: var(--muted);
+      line-height: 0
+    }
+
+    .cue:hover {
+      color: var(--accent)
+    }
+
+    .cue .dot {
+      fill: var(--accent);
+      animation: scrollcue 1.8s ease-in-out infinite
+    }
+
+    @keyframes scrollcue {
+      0% {
+        transform: translateY(0);
+        opacity: 1
+      }
+
+      70% {
+        transform: translateY(9px);
+        opacity: 0
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 0
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      html {
+        scroll-behavior: auto
+      }
+
+      .cue .dot {
+        animation: none
+      }
+
+      .hero .tagline::after {
+        animation: none
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas class="net" aria-hidden="true"></canvas>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="#">Debasish Mohanty</a>
+      <nav aria-label="Main">
+        <a href="#problems">Problems solved</a>
+        <a href="#innovation">Innovation</a>
+        <a href="#notes">Notes</a>
+        <a href="#contact">Contact</a>
+        <a href="https://github.com/Debasish-87" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/debasishmohanty87" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="DEBASISH_MOHANTY_RESUME.pdf">Resume</a>
+      </nav>
+    </div>
+    <div class="progress" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <div class="stage">
+      <div class="wrap">
+        <section class="hero">
+          <h1>AI Infrastructure Engineer</h1>
+          <p class="tagline">I make LLMs run fast, cheap and reliable.</p>
+          <p class="stack">AWS → Kubernetes → vLLM → GPU</p>
+          <div class="about">
+            <p>I build and debug the infrastructure under LLMs: GPU memory, KV cache, Kubernetes and cloud. I fix real
+              bugs in vLLM, Kubernetes Autoscaler and Falco.</p>
+            <p>Contributor to vLLM, Kubernetes and Falco.</p>
+          </div>
+        </section>
+      </div>
+      <div class="cue-wrap">
+        <div class="wrap">
+          <a class="cue" href="#problems" aria-label="Scroll to problems solved">
+            <svg width="22" height="34" viewBox="0 0 22 34" fill="none" aria-hidden="true">
+              <rect x="1" y="1" width="20" height="32" rx="10" stroke="currentColor" stroke-width="1.5" />
+              <circle class="dot" cx="11" cy="10" r="2.25" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="wrap">
+        <section class="problems" id="problems">
+          <h2>Problems solved</h2>
+
+          <article class="item">
+            <h3>vLLM</h3>
+            <div>
+              <div class="entry">
+                <p class="problem">KV offloading failed for models with mixed KV-cache groups, such as DeepSeek-V4-Flash
+                  and Gemma-4.</p>
+                <p class="fix">Added blocks_per_chunk, backward compatible with the existing block_size setting.</p>
+                <p class="pr"><a href="https://github.com/vllm-project/vllm/pull/48878" target="_blank"
+                    rel="noopener">PR #48878</a></p>
+              </div>
+              <div class="entry">
+                <p class="problem">Internal load balancing needed a fix.</p>
+                <p class="fix">Co-authored the fix with Nick Hill. Merged July 27.</p>
+                <p class="pr"><a href="https://github.com/vllm-project/vllm/pull/49204" target="_blank"
+                    rel="noopener">PR #49204</a></p>
+              </div>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Kubernetes Autoscaler</h3>
+            <div>
+              <div class="entry">
+                <p class="problem">A pool configured with minSize 3 was silently read as 1, causing under-provisioning.
+                </p>
+                <p class="fix">Carried minSize and maxSize through. Backported to releases 1.32 and 1.33.</p>
+                <p class="pr"><a href="https://github.com/kubernetes/autoscaler/pull/9506" target="_blank"
+                    rel="noopener">PR #9506</a></p>
+              </div>
+              <div class="entry">
+                <p class="problem">AWS scale-up from zero did not work with CSI volumes.</p>
+                <p class="fix">Fixed it by populating the CSI node topology.</p>
+                <p class="pr"><a href="https://github.com/kubernetes/autoscaler/pull/10133" target="_blank"
+                    rel="noopener">PR #10133</a></p>
+              </div>
+              <div class="entry">
+                <p class="problem">OCI template nodes did not use the registered ephemeral-storage.</p>
+                <p class="fix">Used the node’s registered ephemeral-storage for the template.</p>
+                <p class="pr"><a href="https://github.com/kubernetes/autoscaler/pull/9993" target="_blank"
+                    rel="noopener">PR #9993</a></p>
+              </div>
+              <div class="entry">
+                <p class="problem">Auto Scaling calls ignored the AWS SDK endpoint environment variables.</p>
+                <p class="fix">Honored those variables for the AWS Auto Scaling client.</p>
+                <p class="pr"><a href="https://github.com/kubernetes/autoscaler/pull/9992" target="_blank"
+                    rel="noopener">PR #9992</a></p>
+              </div>
+              <div class="entry">
+                <p class="problem">Documentation links in the cluster-autoscaler README broke after the cloud provider
+                  migration.</p>
+                <p class="fix">Reported the issue.</p>
+                <p class="pr"><a href="https://github.com/kubernetes/autoscaler/issues/10105" target="_blank"
+                    rel="noopener">Issue #10105</a></p>
+              </div>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Kubernetes VPA</h3>
+            <div>
+              <div class="entry">
+                <p class="problem">The admission controller failed on custom resources in Helm installs.</p>
+                <p class="fix">Restored the missing */scale RBAC permissions.</p>
+                <p class="pr"><a href="https://github.com/kubernetes/autoscaler/pull/9515" target="_blank"
+                    rel="noopener">PR #9515</a></p>
+              </div>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Falco</h3>
+            <div>
+              <div class="entry">
+                <p class="problem">Memory metrics silently overflowed for processes using more than 4GB.</p>
+                <p class="fix">Fixed with 64-bit arithmetic.</p>
+                <p class="pr"><a href="https://github.com/falcosecurity/libs/pull/2930" target="_blank"
+                    rel="noopener">PR #2930</a></p>
+              </div>
+              <div class="entry">
+                <p class="problem">File descriptors leaked on error paths in libscap.</p>
+                <p class="fix">Closed the directory handle on every failure path. Verified leak-free with Heaptrack.</p>
+                <p class="pr"><a href="https://github.com/falcosecurity/libs/pull/2926" target="_blank"
+                    rel="noopener">PR #2926</a></p>
+              </div>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Cluster API</h3>
+            <div>
+              <div class="entry">
+                <p class="fix">Added stable BuildKit cache mount IDs.</p>
+                <p class="pr"><a href="https://github.com/kubernetes-sigs/cluster-api/pull/13930" target="_blank"
+                    rel="noopener">PR #13930</a></p>
+              </div>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Kubespray</h3>
+            <div>
+              <div class="entry">
+                <p class="fix">Updated the CSI sidecar image versions.</p>
+                <p class="pr"><a href="https://github.com/kubernetes-sigs/kubespray/pull/13395" target="_blank"
+                    rel="noopener">PR #13395</a></p>
+              </div>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Metrics Server</h3>
+            <div>
+              <div class="entry">
+                <p class="fix">Clarified the kube-apiserver version skew policy in the compatibility matrix.</p>
+                <p class="pr"><a href="https://github.com/kubernetes-sigs/metrics-server/pull/1769" target="_blank"
+                    rel="noopener">PR #1769</a></p>
+              </div>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Kubernetes website</h3>
+            <div>
+              <div class="entry">
+                <p class="fix">Clarified the control plane node description in the cluster introduction.</p>
+                <p class="pr"><a href="https://github.com/kubernetes/website/pull/56522" target="_blank"
+                    rel="noopener">PR #56522</a></p>
+              </div>
+            </div>
+          </article>
+
+        </section>
+      </div>
+
+      <div class="wrap">
+        <section class="innovation" id="innovation">
+          <h2>Innovation</h2>
+
+          <article class="item">
+            <h3>LLM Inference Platform</h3>
+            <div>
+              <p class="idea">LLM serving on AWS that costs nothing until you turn it on.</p>
+              <p class="detail">Terraform-built EKS with GPU Spot nodes scaled to zero, vLLM behind a FastAPI gateway,
+                S3 model storage with IRSA, and GitHub Actions CI/CD.</p>
+              <p class="pr"><a href="https://github.com/Debasish-87/llm-inference-platform" target="_blank"
+                  rel="noopener">View on GitHub</a></p>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>LLM Serving Platform</h3>
+            <div>
+              <p class="idea">GPU LLM serving where cost and latency are measured, not guessed.</p>
+              <p class="detail">Production-grade vLLM on Kubernetes with full-stack observability and cost and latency
+                benchmarking.</p>
+              <p class="pr"><a href="https://github.com/Debasish-87/llm-serving-platform" target="_blank"
+                  rel="noopener">View on GitHub</a></p>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>GPU Compute Management</h3>
+            <div>
+              <p class="idea">Learn to operate a GPU without paying for one.</p>
+              <p class="detail">Hardware health, driver and CUDA audit, VRAM budgeting, KV cache, quantization and
+                batching. Runs mostly on zero GPU cost via simulation.</p>
+              <p class="pr"><a href="https://github.com/Debasish-87/gpu-compute-management" target="_blank"
+                  rel="noopener">View on GitHub</a></p>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>AI Platform Infrastructure</h3>
+            <div>
+              <p class="idea">A reusable AWS base for AI workloads.</p>
+              <p class="detail">Terraform, EKS and OIDC-based CI/CD for deploying containerized apps.</p>
+              <p class="pr"><a href="https://github.com/Debasish-87/ai-platform-infrastructure" target="_blank"
+                  rel="noopener">View on GitHub</a></p>
+            </div>
+          </article>
+
+        </section>
+      </div>
+
+      <div class="wrap">
+        <section class="notes" id="notes">
+          <h2>Notes</h2>
+
+          <article class="item">
+            <h3>API assumptions</h3>
+            <div>
+              <p class="idea">The bug was in the API’s assumption, not the runtime.</p>
+              <p class="pr"><a href="https://github.com/vllm-project/vllm/pull/48878" target="_blank" rel="noopener">PR
+                  #48878</a></p>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Silent failures</h3>
+            <div>
+              <p class="idea">Silently wrong is worse than crashing.</p>
+              <p class="pr"><a href="https://github.com/kubernetes/autoscaler/pull/9506" target="_blank"
+                  rel="noopener">PR #9506</a></p>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Deployment drift</h3>
+            <div>
+              <p class="idea">One deployment path had the permission. The other did not.</p>
+              <p class="pr"><a href="https://github.com/kubernetes/autoscaler/pull/9515" target="_blank"
+                  rel="noopener">PR #9515</a></p>
+            </div>
+          </article>
+
+          <article class="item">
+            <h3>Low-level bugs</h3>
+            <div>
+              <p class="idea">A bug that never crashes can still break security.</p>
+              <p class="pr"><a href="https://github.com/falcosecurity/libs/pull/2930" target="_blank" rel="noopener">PR
+                  #2930</a></p>
+            </div>
+          </article>
+
+          <p class="more"><a href="https://www.linkedin.com/in/debasishmohanty87" target="_blank" rel="noopener">More on
+              LinkedIn</a></p>
+        </section>
+      </div>
+
+      <div class="wrap">
+        <section class="now" id="now">
+          <h2>Now</h2>
+          <ul>
+            <li>Working on load balancing in vLLM.</li>
+            <li>Fixing AWS scale-up edge cases in Kubernetes Autoscaler.</li>
+            <li>Building LLM serving and GPU tooling on AWS, in the open.</li>
+          </ul>
+          <p class="stamp">Updated September 2026</p>
+        </section>
+      </div>
+
+      <div class="wrap">
+        <section class="term" id="terminal">
+          <h2>Terminal</h2>
+          <div class="tbox" id="tbox">
+            <div class="tout" id="tout" role="log" aria-live="polite">
+              <p>Type "help" or tap a command below.</p>
+            </div>
+            <form class="tform" id="tform" autocomplete="off">
+              <span class="ps" aria-hidden="true">$</span>
+              <input id="tin" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"
+                aria-label="Terminal command">
+            </form>
+          </div>
+          <div class="chips">
+            <button class="chip" type="button" data-c="help">help</button>
+            <button class="chip" type="button" data-c="whoami">whoami</button>
+            <button class="chip" type="button" data-c="stack">stack</button>
+            <button class="chip" type="button" data-c="oss">oss</button>
+            <button class="chip" type="button" data-c="projects">projects</button>
+            <button class="chip" type="button" data-c="now">now</button>
+            <button class="chip" type="button" data-c="hire">hire</button>
+          </div>
+        </section>
+      </div>
+
+      <div class="wrap">
+        <section class="contact" id="contact">
+          <h2>Let's talk.</h2>
+          <div class="mailrow">
+            <a class="mail" href="mailto:debasishm8765@gmail.com">debasishm8765@gmail.com</a>
+            <button class="copy" type="button">Copy</button>
+            <span class="sr-only" id="copied" aria-live="polite"></span>
+          </div>
+          <p class="links">
+            <a href="https://github.com/Debasish-87" target="_blank" rel="noopener">GitHub</a>
+            <a href="https://www.linkedin.com/in/debasishmohanty87" target="_blank" rel="noopener">LinkedIn</a>
+          </p>
+        </section>
+      </div>
+      <footer>
+        <div class="wrap foot"><span>© 2026 Debasish Mohanty</span><a href="#">Back to top</a></div>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var stage = document.querySelector('.stage');
+      if (!stage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var ticking = false;
+      function update() {
+        var vh = window.innerHeight || 1;
+        var p = Math.min(1, Math.max(0, window.scrollY / vh));
+        stage.style.opacity = String(Math.max(0, 1 - p * 2.2));
+        stage.style.transform = 'translateY(' + (-p * 32) + 'px)';
+        ticking = false;
+      }
+      window.addEventListener('scroll', function () {
+        if (!ticking) { ticking = true; window.requestAnimationFrame(update) }
+      }, { passive: true });
+      update();
+    })();
+  </script>
+  <script>
+    (function () {
+      var hero = document.querySelector('.hero');
+      if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var cursor = document.createElement('span');
+      cursor.className = 'cursor';
+      cursor.setAttribute('aria-hidden', 'true');
+      var specs = [['h1', 48], ['.tagline', 30], ['.stack', 32]];
+      var items = [];
+      specs.forEach(function (s) {
+        var el = hero.querySelector(s[0]);
+        if (!el) return;
+        var text = el.textContent.trim();
+        el.textContent = '';
+        var sr = document.createElement('span');
+        sr.className = 'sr-only';
+        sr.textContent = text;
+        var typed = document.createElement('span');
+        typed.setAttribute('aria-hidden', 'true');
+        el.appendChild(sr);
+        el.appendChild(typed);
+        items.push({ el: el, typed: typed, text: text, speed: s[1] });
+      });
+      if (!items.length) return;
+      hero.classList.add('typed-js', 'typing');
+      items[0].el.appendChild(cursor);
+      var i = 0;
+      function next() {
+        if (i >= items.length) { hero.classList.remove('typing'); return }
+        var it = items[i], n = 0;
+        it.el.appendChild(cursor);
+        (function step() {
+          n++;
+          it.typed.textContent = it.text.slice(0, n);
+          if (n < it.text.length) { setTimeout(step, it.speed) }
+          else { i++; setTimeout(next, 260) }
+        })();
+      }
+      setTimeout(next, 350);
+    })();
+  </script>
+  <script>
+    (function () {
+      var bar = document.querySelector('.progress');
+      var ticking = false;
+      function updateBar() {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+        bar.style.transform = 'scaleX(' + p + ')';
+        ticking = false;
+      }
+      if (bar) {
+        window.addEventListener('scroll', function () {
+          if (!ticking) { ticking = true; window.requestAnimationFrame(updateBar) }
+        }, { passive: true });
+        window.addEventListener('resize', updateBar);
+        updateBar();
+      }
+
+      var btn = document.querySelector('.copy');
+      var note = document.getElementById('copied');
+      var email = 'debasishm8765@gmail.com';
+      function done(ok) {
+        btn.textContent = ok ? 'Copied' : 'Copy failed';
+        if (note) note.textContent = ok ? 'Email copied' : 'Copy failed';
+        setTimeout(function () { btn.textContent = 'Copy'; if (note) note.textContent = '' }, 1600);
+      }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = email;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'absolute';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        var ok = false;
+        try { ok = document.execCommand('copy') } catch (e) { }
+        document.body.removeChild(ta);
+        done(ok);
+      }
+      if (btn) {
+        btn.addEventListener('click', function () {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email).then(function () { done(true) }, fallback);
+          } else {
+            fallback();
+          }
+        });
+      }
+    })();
+  </script>
+  <script>
+    (function () {
+      var form = document.getElementById('tform');
+      var input = document.getElementById('tin');
+      var out = document.getElementById('tout');
+      var box = document.getElementById('tbox');
+      if (!form || !input || !out) return;
+      var EMAIL = 'debasishm8765@gmail.com';
+      var GH = 'https://github.com/Debasish-87';
+      var LI = 'https://www.linkedin.com/in/debasishmohanty87';
+      var hist = [];
+      var hi = 0;
+      var aliases = { about: 'whoami', email: 'contact', innovation: 'projects', clear: 'clear' };
+      var commands = {
+        help: function () {
+          return [
+            'Commands:',
+            '  whoami    who I am',
+            '  stack     what I work with',
+            '  oss       open source fixes',
+            '  projects  things I built',
+            '  now       what I am working on',
+            '  contact   how to reach me',
+            '  github    profile',
+            '  linkedin  profile',
+            '  hire      the short answer',
+            '  clear     clear the screen'
+          ]
+        },
+        whoami: function () {
+          return [
+            'Debasish Mohanty, AI Infrastructure Engineer.',
+            'I build and debug the infrastructure under LLMs.'
+          ]
+        },
+        stack: function () {
+          return [
+            'AWS → Kubernetes → vLLM → GPU',
+            'Also: Terraform, Docker, FastAPI, Prometheus, Grafana, GitOps.'
+          ]
+        },
+        oss: function () {
+          return [
+            { t: 'vLLM        KV offloading for mixed KV-cache groups', h: 'https://github.com/vllm-project/vllm/pull/48878' },
+            { t: 'vLLM        internal load-balancing fix', h: 'https://github.com/vllm-project/vllm/pull/49204' },
+            { t: 'Autoscaler  minSize fix, backported to 1.32 and 1.33', h: 'https://github.com/kubernetes/autoscaler/pull/9506' },
+            { t: 'Autoscaler  AWS scale-up from zero with CSI', h: 'https://github.com/kubernetes/autoscaler/pull/10133' },
+            { t: 'VPA         missing */scale RBAC', h: 'https://github.com/kubernetes/autoscaler/pull/9515' },
+            { t: 'Falco       memory metric overflow above 4GB', h: 'https://github.com/falcosecurity/libs/pull/2930' }
+          ]
+        },
+        projects: function () {
+          function row(n, d) { return (n + '                            ').slice(0, 28) + d }
+          return [
+            { t: row('LLM Inference Platform', 'LLM serving on AWS'), h: GH + '/llm-inference-platform' },
+            { t: row('LLM Serving Platform', 'GPU serving, benchmarked'), h: GH + '/llm-serving-platform' },
+            { t: row('GPU Compute Management', 'single-GPU ops toolkit'), h: GH + '/gpu-compute-management' },
+            { t: row('AI Platform Infrastructure', 'Terraform, EKS, OIDC CI/CD'), h: GH + '/ai-platform-infrastructure' }
+          ]
+        },
+        now: function () {
+          return [
+            'Load balancing in vLLM.',
+            'AWS scale-up edge cases in Kubernetes Autoscaler.',
+            'LLM serving and GPU tooling on AWS, in the open.'
+          ]
+        },
+        contact: function () { return [{ t: EMAIL, h: 'mailto:' + EMAIL }] },
+        github: function () { return [{ t: GH, h: GH }] },
+        linkedin: function () { return [{ t: LI, h: LI }] },
+        hire: function () { return ['Good call.', { t: 'Email me: ' + EMAIL, h: 'mailto:' + EMAIL }] }
+      };
+      function has(o, k) { return Object.prototype.hasOwnProperty.call(o, k) }
+      function print(line, cls) {
+        var p = document.createElement('p');
+        if (cls) p.className = cls;
+        if (typeof line === 'string') {
+          p.textContent = line;
+        } else {
+          var a = document.createElement('a');
+          a.href = line.h;
+          a.textContent = line.t;
+          if (line.h.indexOf('http') === 0) { a.target = '_blank'; a.rel = 'noopener' }
+          p.appendChild(a);
+        }
+        out.appendChild(p);
+      }
+      function run(raw) {
+        var c = raw.trim();
+        if (!c) return;
+        print(c, 'cmd');
+        hist.push(c);
+        hi = hist.length;
+        var key = c.toLowerCase();
+        if (has(aliases, key)) key = aliases[key];
+        if (key === 'clear') { out.textContent = ''; return }
+        if (has(commands, key)) {
+          commands[key]().forEach(function (l) { print(l) });
+        } else {
+          print('command not found: ' + c + '. Type help.');
+        }
+        out.scrollTop = out.scrollHeight;
+      }
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        run(input.value);
+        input.value = '';
+      });
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (hi > 0) { hi--; input.value = hist[hi] }
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (hi < hist.length - 1) { hi++; input.value = hist[hi] }
+          else { hi = hist.length; input.value = '' }
+        }
+      });
+      box.addEventListener('click', function (e) {
+        if (e.target.tagName === 'A') return;
+        var sel = window.getSelection ? window.getSelection().toString() : '';
+        if (!sel) input.focus({ preventScroll: true });
+      });
+      document.querySelectorAll('.chip').forEach(function (b) {
+        b.addEventListener('click', function () { run(b.getAttribute('data-c')) });
+      });
+    })();
+  </script>
+  <script>
+    (function () {
+      var canvas = document.querySelector('.net');
+      if (!canvas || !canvas.getContext) return;
+      var ctx = canvas.getContext('2d');
+      var cs = getComputedStyle(document.documentElement);
+      var MUTED = cs.getPropertyValue('--muted').trim() || '#8C95A1';
+      var ACCENT = cs.getPropertyValue('--accent').trim() || '#E5B567';
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var LINK = 150, POINTER = 190;
+      var w = 0, h = 0, dpr = 1, nodes = [], packets = [], spawn = 0, last = 0, running = false;
+      var mouse = { x: -999, y: -999, on: false };
+
+      function rand(a, b) { return a + Math.random() * (b - a) }
+
+      function build() {
+        var count = Math.max(28, Math.min(90, Math.round(w * h / 20000)));
+        nodes = []; packets = [];
+        for (var i = 0; i < count; i++) {
+          var sp = rand(10, 26), ang = rand(0, Math.PI * 2);
+          nodes.push({ x: rand(0, w), y: rand(0, h), vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, r: rand(1.2, 2.2), gpu: Math.random() < 0.1 });
+        }
+      }
+
+      function resize() {
+        var r = canvas.getBoundingClientRect();
+        var nw = Math.round(r.width), nh = Math.round(r.height);
+        if (!nw || !nh) return;
+        var big = !nodes.length || Math.abs(nw - w) > 40 || Math.abs(nh - h) > 220;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = nw; h = nh;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (big) { build() }
+        else {
+          for (var i = 0; i < nodes.length; i++) {
+            nodes[i].x = Math.min(nodes[i].x, w);
+            nodes[i].y = Math.min(nodes[i].y, h);
+          }
+        }
+        if (reduce) draw();
+      }
+
+      function addPacket() {
+        if (packets.length > 16) return;
+        var a = nodes[Math.floor(Math.random() * nodes.length)];
+        var near = [];
+        for (var i = 0; i < nodes.length; i++) {
+          var b = nodes[i];
+          if (b === a) continue;
+          var dx = a.x - b.x, dy = a.y - b.y;
+          if (dx * dx + dy * dy < LINK * LINK) near.push(b);
+        }
+        if (!near.length) return;
+        packets.push({ a: a, b: near[Math.floor(Math.random() * near.length)], t: 0, s: rand(0.5, 1.1) });
+      }
+
+      function step(dt) {
+        for (var i = 0; i < nodes.length; i++) {
+          var n = nodes[i];
+          n.x += n.vx * dt; n.y += n.vy * dt;
+          if (n.x < 0) { n.x = 0; n.vx = Math.abs(n.vx) } else if (n.x > w) { n.x = w; n.vx = -Math.abs(n.vx) }
+          if (n.y < 0) { n.y = 0; n.vy = Math.abs(n.vy) } else if (n.y > h) { n.y = h; n.vy = -Math.abs(n.vy) }
+        }
+        spawn -= dt;
+        if (spawn <= 0) { spawn = rand(0.35, 0.9); addPacket() }
+        for (var j = packets.length - 1; j >= 0; j--) {
+          packets[j].t += dt * packets[j].s;
+          if (packets[j].t >= 1) packets.splice(j, 1);
+        }
+      }
+
+      function draw() {
+        var i, j, a, b, dx, dy, d2, d;
+        ctx.clearRect(0, 0, w, h);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = MUTED;
+        for (i = 0; i < nodes.length; i++) {
+          a = nodes[i];
+          for (j = i + 1; j < nodes.length; j++) {
+            b = nodes[j]; dx = a.x - b.x; dy = a.y - b.y; d2 = dx * dx + dy * dy;
+            if (d2 < LINK * LINK) {
+              ctx.globalAlpha = (1 - Math.sqrt(d2) / LINK) * 0.28;
+              ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+            }
+          }
+        }
+        if (mouse.on) {
+          ctx.strokeStyle = ACCENT;
+          for (i = 0; i < nodes.length; i++) {
+            a = nodes[i]; dx = a.x - mouse.x; dy = a.y - mouse.y; d = Math.sqrt(dx * dx + dy * dy);
+            if (d < POINTER) {
+              ctx.globalAlpha = (1 - d / POINTER) * 0.55;
+              ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+            }
+          }
+        }
+        for (i = 0; i < nodes.length; i++) {
+          a = nodes[i];
+          if (a.gpu) {
+            ctx.globalAlpha = 0.75; ctx.strokeStyle = ACCENT;
+            ctx.strokeRect(a.x - 4, a.y - 4, 8, 8);
+          } else {
+            ctx.globalAlpha = 0.55; ctx.fillStyle = MUTED;
+            ctx.beginPath(); ctx.arc(a.x, a.y, a.r, 0, 6.2832); ctx.fill();
+          }
+        }
+        ctx.fillStyle = ACCENT;
+        for (i = 0; i < packets.length; i++) {
+          var p = packets[i];
+          var x = p.a.x + (p.b.x - p.a.x) * p.t;
+          var y = p.a.y + (p.b.y - p.a.y) * p.t;
+          ctx.globalAlpha = 0.22; ctx.beginPath(); ctx.arc(x, y, 5, 0, 6.2832); ctx.fill();
+          ctx.globalAlpha = 0.95; ctx.beginPath(); ctx.arc(x, y, 2, 0, 6.2832); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      function frame(ts) {
+        var dt = Math.min(0.05, (ts - last) / 1000);
+        last = ts;
+        step(dt);
+        draw();
+        window.requestAnimationFrame(frame);
+      }
+
+      function dim() {
+        var p = Math.min(1, window.scrollY / (window.innerHeight * 0.9));
+        canvas.style.opacity = String(1 - p * 0.5);
+      }
+
+      window.addEventListener('mousemove', function (e) {
+        var r = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - r.left;
+        mouse.y = e.clientY - r.top;
+        mouse.on = mouse.x >= 0 && mouse.y >= 0 && mouse.x <= r.width && mouse.y <= r.height;
+      }, { passive: true });
+      document.addEventListener('mouseleave', function () { mouse.on = false });
+      window.addEventListener('scroll', dim, { passive: true });
+      var rt = null;
+      window.addEventListener('resize', function () {
+        clearTimeout(rt);
+        rt = setTimeout(resize, 120);
+      });
+
+      resize();
+      dim();
+      if (!reduce && !running) {
+        running = true;
+        last = performance.now();
+        window.requestAnimationFrame(frame);
+      }
+    })();
+  </script>
+</body>
+
+</html>
